@@ -1,11 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import handler from './app/ApiHandler.js';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ScreenHandler from './app/ScreenHandler.js';
+import AddStock from './app/screens/AddStock.js';
 
 
 export default function App() {
+  const [portList, setPortList] = useState([]); //Array of Stock Objects
+
+
   handler()
   const [aaplPrice, setApplPrice] = useState(0);
   const [disPrice, setDisPrice] = useState(0);
@@ -24,11 +30,8 @@ export default function App() {
     
 
   return (
-    <View style={styles.container}>
-      <Text>Appl: {aaplPrice}</Text>
-      <Text>Dis: {disPrice}</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AddStock/>
+    
   );
 }
 

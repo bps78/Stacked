@@ -7,6 +7,12 @@ const handler =  function() {
   global.aaplPrice = aaplPrice;
   global.disPrice = disPrice;
 
+  //API Starter Code
+  const finnhub = require('finnhub');
+  const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+  api_key.apiKey = "cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0" 
+  const finnhubClient = new finnhub.DefaultApi()
+
   //console.log('Handler Started');
 
   const socket = new WebSocket('wss://ws.finnhub.io?token=cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0');

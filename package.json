@@ -9,11 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
     "finnhub": "^1.2.16",
+    "querystring": "^0.2.1",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-gesture-handler": "^2.9.0",
     "react-navigation": "^4.4.4"
   },
   "devDependencies": {
