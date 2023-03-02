@@ -11,7 +11,7 @@ function TextInputBox({title, color, rectWidth, rectHeight, iconName}) {
           <FontAwesome name={iconName} size={24} color="gray"  style={{marginLeft:20, marginRight:20}}/>
           <View style={{width:rectWidth-128, height:rectHeight, justifyContent: 'center', alignItems:'center'}}>
           <TextInput
-            style={{fontFamily: 'PingFangTC-Medium', fontSize: '24'}}
+            style={{fontFamily: 'Lexend-Regular', fontSize: '24'}}
             placeholder={title}
             placeholderTextColor = 'gray'
             />

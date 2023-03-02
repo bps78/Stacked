@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddStock from './screens/AddStock';
 import App from '../App';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +12,7 @@ const ScreenHandler = () => {
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
-            component={App}
+            component={HomeScreen}
           />
           <Stack.Screen
             name="AddStock"

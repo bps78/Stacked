@@ -2,10 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import handler from './app/ApiHandler.js';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import ScreenHandler from './app/ScreenHandler.js';
-import AddStock from './app/screens/AddStock.js';
+
 
 
 export default function App() {
@@ -30,8 +29,9 @@ export default function App() {
     
 
   return (
-    <AddStock/>
     
+      <ScreenHandler/>
+   
   );
 }
 

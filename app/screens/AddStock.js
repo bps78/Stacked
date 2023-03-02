@@ -6,17 +6,24 @@ import colors from '../config/colors.js'
 import TextInputBox from '../components/TextInputBox.js';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-
+import {useFonts} from 'expo-font';
 
 
 
 export default function AddStock({navigation}) {
+
+  //Import Custom Fonts
+  const [fontsLoaded] = useFonts({
+    'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
+    'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf')
+  });
+
     return(
         <View style = {styles.container}>
           <SafeAreaView style = {styles.header}>
             <Text style = {styles.title}>Add Ticker</Text>
           </SafeAreaView>
-          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 130}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 115}}>
             <TextInputBox
               title="Symbol"
               color= {colors.neutral}
@@ -50,12 +57,12 @@ export default function AddStock({navigation}) {
            <View style={{flexDirection:'row'}}>
             <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.neutralButton}]}
               onPress={() =>  console.log('Back')}
-              underlayColor={colors.neutral}>
+              underlayColor={colors.neutralButtonHighlight}>
             
               <Text style = {styles.buttonText}>Back</Text>
             </TouchableHighlight>
 
-            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.primaryDark}]}
+            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.primaryMid}]}
               onPress={() =>  console.log('sumbit')}
               underlayColor={colors.primary}>
             
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 20,
     fontSize: 50,
-    fontFamily: 'PingFangTC-Semibold',
+    fontFamily: 'Lexend-Medium',
   },
   bottomButtons:{
     justifyContent: 'center',
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50
   },
   buttonText:{
-    fontFamily: 'PingFangTC-Semibold',
+    fontFamily: 'Lexend-Medium',
     fontSize: 32,
     color: 'white',
   }
