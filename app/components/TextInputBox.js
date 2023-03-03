@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 
-function TextInputBox({title, color, rectWidth, rectHeight, iconName}) {
+function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunction,length,inputType}) {
   return(
           <View 
           style={[styles.rectangle, {backgroundColor: color}, {width: rectWidth}, {height: rectHeight}]}>
@@ -14,6 +14,9 @@ function TextInputBox({title, color, rectWidth, rectHeight, iconName}) {
             style={{fontFamily: 'Lexend-Regular', fontSize: '24'}}
             placeholder={title}
             placeholderTextColor = 'gray'
+            onChangeText={setFunction}
+            maxLength={length}
+            keyboardType={inputType}
             />
             </View>
         </View>

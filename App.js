@@ -8,8 +8,8 @@ import ScreenHandler from './app/ScreenHandler.js';
 
 
 export default function App() {
-  const [portList, setPortList] = useState([]); //Array of Stock Objects
-
+  var userStocks = [];
+  global.userStocks = userStocks;
 
   handler()
   const [aaplPrice, setApplPrice] = useState(0);

@@ -7,16 +7,36 @@ import TextInputBox from '../components/TextInputBox.js';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
+import '../../App';
+
 
 
 
 export default function AddStock({navigation}) {
+
+  //Text Input Values
+  const[symbol, setSymbol] = useState('');
+  const[shares, setShares] = useState(0);
+  const[price, setPrice] = useState(0.0);
 
   //Import Custom Fonts
   const [fontsLoaded] = useFonts({
     'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
     'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf')
   });
+
+  function createStockObj(){
+     const newStock = new Stock();
+     newStock.shares = shares;
+     newStock.symbol = symbol;
+     newStock.avgPurchase = price;
+
+     let newList = global.userStocks;
+     newList.push(newStock);
+     global.userStocks= newList;
+     
+     console.log('Stock Added');
+  }
 
     return(
         <View style = {styles.container}>
@@ -30,6 +50,8 @@ export default function AddStock({navigation}) {
               rectWidth = {350}
               rectHeight = {75}
               iconName='search'
+              setFunction={setSymbol}
+              length={4}
               >
             </TextInputBox>
 
@@ -39,16 +61,20 @@ export default function AddStock({navigation}) {
               rectWidth = {350}
               rectHeight = {75}
               iconName='hashtag'
+              setFunction={setShares}
+              inputType='number-pad'
               >
             
             </TextInputBox>
 
             <TextInputBox
-              title="Price"
+              title="Price/ Share"
               color= {colors.neutral}
               rectWidth = {350}
               rectHeight = {75}
               iconName = 'money'
+              setFunction={setPrice}
+              inputType='decimal-pad'
               >
             </TextInputBox>
 
@@ -56,14 +82,14 @@ export default function AddStock({navigation}) {
           <View style={{flex:1}}></View>
            <View style={{flexDirection:'row'}}>
             <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.neutralButton}]}
-              onPress={() =>  console.log('Back')}
+              onPress={() => navigation.navigate('Home')}
               underlayColor={colors.neutralButtonHighlight}>
             
               <Text style = {styles.buttonText}>Back</Text>
             </TouchableHighlight>
 
             <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.primaryMid}]}
-              onPress={() =>  console.log('sumbit')}
+              onPress={() =>  createStockObj()}
               underlayColor={colors.primary}>
             
              <Text style = {styles.buttonText}>Sumbit</Text>
