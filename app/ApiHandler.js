@@ -18,8 +18,8 @@ const handler =  function() {
   const socket = new WebSocket('wss://ws.finnhub.io?token=cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0');
   
   socket.addEventListener('open', function (event){
-    socket.send(JSON.stringify({'type':'subscribe', 'symbol':'AAPL'}))
-    socket.send(JSON.stringify({'type':'subscribe', 'symbol':'DIS'}))
+  //  socket.send(JSON.stringify({'type':'subscribe', 'symbol':'AAPL'}))
+   // socket.send(JSON.stringify({'type':'subscribe', 'symbol':'DIS'}))
   });
 
   socket.addEventListener('message', function (event){

@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import {useFonts} from 'expo-font';
 import colors from '../config/colors';
 import '../../App';
 import './AddStock';
 import { SafeAreaView } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
+import {TouchableHighlight} from 'react-native-gesture-handler';
+import StockListItem from '../components/StockListItem';
+import Stock from '../Stock';
 
 export default function HomeScreen({navigation}) {
+
+  
+  const[userStocks, setUserStocks] = useState([new Stock()])
+  global.userStocks = userStocks;
+
  //Import Custom Fonts
  const [dayView,setDayView] = useState(true);
+
  const [fontsLoaded] = useFonts({
   'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
-  'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf')
+  'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
 });
     return (
         <View style={styles.container}>
@@ -34,14 +43,23 @@ export default function HomeScreen({navigation}) {
 
 
             <FlatList
-            data={global.userStocks}
+            data={userStocks}
             //keyExtractor= { (stock, stock.id) => stock.index.toString()}
             renderItem= {({stock}) => (
-              <StockListItem/>
+              <StockListItem
+               symbol={stock.symbol}
+               ></StockListItem>
             )}
             >
 
             </FlatList>
+
+           <TouchableHighlight
+            style = {styles.botButton}
+            onPress={() => navigation.navigate('AddStock')} 
+            underlayColor= {colors.primaryMid}>
+              <Text style={{fontFamily: "Lexend-Medium", color:'white', fontSize: 30}}>Add Stock</Text>
+            </TouchableHighlight>
         </View>
       );
     }
@@ -74,6 +92,15 @@ export default function HomeScreen({navigation}) {
         color: 'black',
         fontFamily: 'Lexend-Regular',
         fontSize: 16
+      },
+      botButton:{
+        width: 428,
+        height: 120,
+        backgroundColor: colors.primaryDark,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopRightRadius: 70,
+        borderTopLeftRadius: 70
       }
     });
     

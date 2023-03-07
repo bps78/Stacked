@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
 import '../../App';
+import './HomeScreen';
 
 
 

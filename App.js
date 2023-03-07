@@ -2,14 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import handler from './app/ApiHandler.js';
+import Stock from './app/Stock.js';
+import {useFonts} from 'expo-font'
 
 import ScreenHandler from './app/ScreenHandler.js';
 
 
 
 export default function App() {
-  var userStocks = [];
-  global.userStocks = userStocks;
+  
+
+  const [fontsLoaded] = useFonts({
+    'Lexend-Regular': require('./app/assets/fonts/Lexend-Regular.ttf'),
+    'Lexend-Medium': require('./app/assets/fonts/Lexend-Medium.ttf'),
+  });
 
   handler()
   const [aaplPrice, setApplPrice] = useState(0);
