@@ -4,10 +4,10 @@ import { TextInput } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../config/colors';
 
-function StockListItem({symbol,}) {
+function StockListItem({symbol}) {
   return(
     <View style={styles.container}>
-        <Text style={{color:'white', fontFamily: 'Lexend-Regular'}}>({symbol})</Text>
+        <Text style={{color:'white', fontFamily: 'Lexend-Regular'}}>{symbol}</Text>
     </View>
   );
   }
@@ -16,7 +16,7 @@ function StockListItem({symbol,}) {
         container:{
             width:300,
             height:80,
-            backgroundColor: colors.background,
+            backgroundColor: colors.primaryDark,
             justifyContent: 'center'
         }
     })

@@ -12,7 +12,7 @@ import ScreenHandler from './app/ScreenHandler.js';
 export default function App() {
   
 
-  const [fontsLoaded] = useFonts({
+ const [fontsLoaded] = useFonts({
     'Lexend-Regular': require('./app/assets/fonts/Lexend-Regular.ttf'),
     'Lexend-Medium': require('./app/assets/fonts/Lexend-Medium.ttf'),
   });
@@ -32,12 +32,15 @@ export default function App() {
     }, 1500);
     return () => clearInterval(interval);
   }, []);
-    
 
-  return (
+  if(!fontsLoaded){
+    return(null);
+  }
     
-      <ScreenHandler/>
+  return (
    
+      <ScreenHandler/> 
+
   );
 }
 

@@ -12,8 +12,8 @@ import Stock from '../Stock';
 
 export default function HomeScreen({navigation}) {
 
-  
-  const[userStocks, setUserStocks] = useState([new Stock()])
+ 
+  const[userStocks, setUserStocks] = useState([]);
   global.userStocks = userStocks;
 
  //Import Custom Fonts
@@ -45,14 +45,17 @@ export default function HomeScreen({navigation}) {
             <FlatList
             data={userStocks}
             //keyExtractor= { (stock, stock.id) => stock.index.toString()}
-            renderItem= {({stock}) => (
+            renderItem= {({item}) => 
               <StockListItem
-               symbol={stock.symbol}
-               ></StockListItem>
-            )}
-            >
+               symbol= {item.symbol}
+               />
 
-            </FlatList>
+            }
+            keyExtractor={item => item.index}
+            />
+            
+
+           
 
            <TouchableHighlight
             style = {styles.botButton}

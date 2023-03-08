@@ -16,7 +16,7 @@ import './HomeScreen';
 export default function AddStock({navigation}) {
 
   //Text Input Values
-  var stocksAdded = 0;
+  const[stocksAdded, setStocksAdded] = useState(0);
   const[symbol, setSymbol] = useState('');
   const[shares, setShares] = useState(0);
   const[price, setPrice] = useState(0.0);
@@ -29,17 +29,19 @@ export default function AddStock({navigation}) {
 
   function createStockObj(){
      
-     const newStock = new Stock();
-     newStock.shares = shares;
-     newStock.symbol = symbol;
-     newStock.avgPurchase = price;
-     newStock.index = stocksAdded;
-     stocksAdded += 1;
+     const newStock = {
+     shares: shares,
+     symbol: symbol,
+     avgPrice: price,
+     index: stocksAdded,
+     }
+     setStocksAdded(stocksAdded + 1);
      let newList = global.userStocks;
      newList.push(newStock);
      global.userStocks= newList;
      
      console.log('Stock Added');
+     console.log(global.userStocks);
   }
 
     return(
