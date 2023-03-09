@@ -16,7 +16,7 @@ import './HomeScreen';
 export default function AddStock({navigation}) {
 
   //Text Input Values
-  const[stocksAdded, setStocksAdded] = useState(0);
+  let stocksAdded = 0;
   const[symbol, setSymbol] = useState('');
   const[shares, setShares] = useState(0);
   const[price, setPrice] = useState(0.0);
@@ -34,8 +34,11 @@ export default function AddStock({navigation}) {
      symbol: symbol,
      avgPrice: price,
      index: stocksAdded,
+     curPrice: 0,
+     dateBought: "",
+     openPrice: 0,
      }
-     setStocksAdded(stocksAdded + 1);
+     stocksAdded = stocksAdded + 1;
      let newList = global.userStocks;
      newList.push(newStock);
      global.userStocks= newList;

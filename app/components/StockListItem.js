@@ -1,23 +1,45 @@
 import * as React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Pressable } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
 
-function StockListItem({symbol}) {
+function StockListItem({symbol, onCaratPress}) {
   return(
     <View style={styles.container}>
-        <Text style={{color:'white', fontFamily: 'Lexend-Regular'}}>{symbol}</Text>
+      <View style={{width: 125}}>
+        <Text style={{color:'white', fontFamily: 'Lexend-Medium', fontSize: 32}}>{symbol}</Text>
+      </View>
+        <View style={styles.changeBox}><Text style={styles.changeText}>$3.45</Text></View>
+       <Pressable
+        onPress={onCaratPress}
+        style = {{marginLeft: 10}}>
+          <Entypo name="chevron-right" size={40} color="lightgrey" />  
+       </Pressable>
     </View>
   );
   }
 
   const styles = StyleSheet.create({
         container:{
-            width:300,
-            height:80,
-            backgroundColor: colors.primaryDark,
-            justifyContent: 'center'
+            width:330,
+            height:100,
+            backgroundColor: colors.background,
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        changeBox:{
+            width: 160,
+            height:57,
+            borderRadius: 20,
+            backgroundColor: colors.primaryMid,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        changeText:{
+          fontFamily: 'Lexend-Medium',
+          color: 'white',
+          fontSize: 28
         }
     })
     export default StockListItem;      

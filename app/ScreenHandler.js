@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddStock from './screens/AddStock';
 import HomeScreen from './screens/HomeScreen';
+import DetailScreen from './screens/DetailScreen';
 import {useFonts} from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,11 @@ const ScreenHandler = () => {
           <Stack.Screen
             name="AddStock"
             component={AddStock}
+            options={{headerShown: false}}
+            />
+          <Stack.Screen
+            name="Detail"
+            component={DetailScreen}
             options={{headerShown: false}}
             />
         </Stack.Navigator>

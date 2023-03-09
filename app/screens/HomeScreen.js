@@ -33,21 +33,25 @@ export default function HomeScreen({navigation}) {
             </SafeAreaView>
 
             <View style={{flexDirection: 'row'}}>
-              <Pressable onPress={() => setDayView(true)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.primaryMid : colors.neutralButton, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
+              <Pressable onPress={() => setDayView(true)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.primaryDark : colors.neutralButton, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
                 <Text style={styles.viewChangeText}>Day</Text>
               </Pressable>
-              <Pressable onPress = {() => setDayView(false)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutralButton : colors.primaryMid, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
+              <Pressable onPress = {() => setDayView(false)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutralButton : colors.primaryDark, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
                 <Text style={styles.viewChangeText}>Total</Text>
               </Pressable>
             </View>
 
 
             <FlatList
+            style={styles.flatList}
             data={userStocks}
             //keyExtractor= { (stock, stock.id) => stock.index.toString()}
             renderItem= {({item}) => 
               <StockListItem
                symbol= {item.symbol}
+               onCaratPress={() => navigation.navigate('Detail', {
+                symbol: item.symbol,
+               })}
                />
 
             }
@@ -90,10 +94,11 @@ export default function HomeScreen({navigation}) {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop:30,
+        marginBottom: 20
       },
       viewChangeText:{
-        color: 'black',
-        fontFamily: 'Lexend-Regular',
+        color: 'lightgrey',
+        fontFamily: 'Lexend-Medium',
         fontSize: 16
       },
       botButton:{
@@ -104,6 +109,9 @@ export default function HomeScreen({navigation}) {
         alignItems: 'center',
         borderTopRightRadius: 70,
         borderTopLeftRadius: 70
+      },
+      flatList:{
+        marginTop: 30
       }
     });
     
