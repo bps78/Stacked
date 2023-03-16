@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import handler from './app/ApiHandler.js';
 import Stock from './app/Stock.js';
-import {useFonts} from 'expo-font'
+import {useFonts} from 'expo-font' //npm i expo-font
 
 import ScreenHandler from './app/ScreenHandler.js';
 

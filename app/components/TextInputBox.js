@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 
-function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunction,length,inputType}) {
+function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunction,length,inputType,autoCap}) {
+
+  
+
   return(
+       
           <View 
           style={[styles.rectangle, {backgroundColor: color}, {width: rectWidth}, {height: rectHeight}]}>
           
           <FontAwesome name={iconName} size={24} color="gray"  style={{marginLeft:20, marginRight:20}}/>
           <View style={{width:rectWidth-128, height:rectHeight, justifyContent: 'center', alignItems:'center'}}>
+          
           <TextInput
             style={{fontFamily: 'Lexend-Regular', fontSize: '24'}}
             placeholder={title}
@@ -17,9 +22,11 @@ function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunctio
             onChangeText={setFunction}
             maxLength={length}
             keyboardType={inputType}
+            autoCapitalize={autoCap}
             />
             </View>
-        </View>
+          </View>
+       
   );
 }
 const styles = StyleSheet.create({

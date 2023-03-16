@@ -4,15 +4,22 @@ import {useFonts} from 'expo-font';
 import colors from '../config/colors';
 import '../../App';
 import './AddStock';
+import '../ApiHandler';
 import { SafeAreaView } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import StockListItem from '../components/StockListItem';
 import Stock from '../Stock';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({route, navigation}) {
 
- 
+  try{
+    const{totShares} = route.params;
+  } catch (e){
+    totShares = 0;
+  }
+  
+
   const[userStocks, setUserStocks] = useState([]);
   global.userStocks = userStocks;
 
@@ -41,8 +48,8 @@ export default function HomeScreen({navigation}) {
               </Pressable>
             </View>
 
-
             <FlatList
+            keyExtractor={item => item.index}
             style={styles.flatList}
             data={userStocks}
             //keyExtractor= { (stock, stock.id) => stock.index.toString()}
@@ -51,11 +58,15 @@ export default function HomeScreen({navigation}) {
                symbol= {item.symbol}
                onCaratPress={() => navigation.navigate('Detail', {
                 symbol: item.symbol,
+                purPrice: item.avgPrice,
+                shares: item.shares,
+                totShares: totShares,
+                date: item.dateBought,
                })}
                />
 
             }
-            keyExtractor={item => item.index}
+            
             />
             
 
@@ -64,7 +75,7 @@ export default function HomeScreen({navigation}) {
            <TouchableHighlight
             style = {styles.botButton}
             onPress={() => navigation.navigate('AddStock')} 
-            underlayColor= {colors.primaryMid}>
+            underlayColor= {colors.neutralButtonHighlight}>
               <Text style={{fontFamily: "Lexend-Medium", color:'white', fontSize: 30}}>Add Stock</Text>
             </TouchableHighlight>
         </View>
@@ -78,9 +89,10 @@ export default function HomeScreen({navigation}) {
         backgroundColor: colors.background,
         alignItems: 'center',
         //justifyContent: 'center',
+        
       },
       header:{
-        width:'100%',
+        width:Dimensions.get('screen').width,
         height:190,
         backgroundColor: colors.primary,
         alignItems: 'center',
@@ -102,9 +114,9 @@ export default function HomeScreen({navigation}) {
         fontSize: 16
       },
       botButton:{
-        width: 428,
+        width: Dimensions.get('screen').width,
         height: 120,
-        backgroundColor: colors.primaryDark,
+        backgroundColor: colors.neutralButton,
         justifyContent: 'center',
         alignItems: 'center',
         borderTopRightRadius: 70,

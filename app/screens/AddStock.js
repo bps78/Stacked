@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Stock from '../Stock.js';
 import colors from '../config/colors.js'
 import TextInputBox from '../components/TextInputBox.js';
@@ -9,14 +9,17 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
 import '../../App';
 import './HomeScreen';
+import './DetailScreen';
 
 
 
 
 export default function AddStock({navigation}) {
+    
 
   //Text Input Values
-  let stocksAdded = 0;
+  let totShares = 0;
+  
   const[symbol, setSymbol] = useState('');
   const[shares, setShares] = useState(0);
   const[price, setPrice] = useState(0.0);
@@ -28,31 +31,38 @@ export default function AddStock({navigation}) {
   });
 
   function createStockObj(){
-     
+     let newList = global.userStocks;
+     const len = newList.length + 1;
      const newStock = {
      shares: shares,
      symbol: symbol,
      avgPrice: price,
-     index: stocksAdded,
+     index: len,
      curPrice: 0,
-     dateBought: "",
+     dateBought: new Date().toDateString(),
      openPrice: 0,
      }
-     stocksAdded = stocksAdded + 1;
-     let newList = global.userStocks;
+     
      newList.push(newStock);
      global.userStocks= newList;
      
+     let shareSum = global.totShares;
+     shareSum += Number(shares);
+     global.totShares = Number(shareSum);
+
      console.log('Stock Added');
      console.log(global.userStocks);
+    
   }
 
     return(
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style = {styles.container}>
           <SafeAreaView style = {styles.header}>
             <Text style = {styles.title}>Add Ticker</Text>
           </SafeAreaView>
-          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 115}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 85}}>
+            
             <TextInputBox
               title="Symbol"
               color= {colors.neutral}
@@ -61,8 +71,10 @@ export default function AddStock({navigation}) {
               iconName='search'
               setFunction={setSymbol}
               length={4}
+              autoCap='characters'
               >
             </TextInputBox>
+            
 
             <TextInputBox
               title="Shares"
@@ -91,7 +103,9 @@ export default function AddStock({navigation}) {
           <View style={{flex:1}}></View>
            <View style={{flexDirection:'row'}}>
             <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.neutralButton}]}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('Home', {
+                totShares: totShares,
+              })}
               underlayColor={colors.neutralButtonHighlight}>
             
               <Text style = {styles.buttonText}>Back</Text>
@@ -104,8 +118,8 @@ export default function AddStock({navigation}) {
              <Text style = {styles.buttonText}>Sumbit</Text>
             </TouchableHighlight>
            </View>
-         
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     height: 150,
-    width: '100%',
+    width: Dimensions.get('screen').width,
     borderBottomLeftRadius: 55,
     borderBottomRightRadius: 55,
     alignItems: 'center',
@@ -133,7 +147,7 @@ const styles = StyleSheet.create({
   bottomButtons:{
     justifyContent: 'center',
     alignItems: 'center',
-    width:214,
+    width: Dimensions.get('screen').width / 2,
     height:140,
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50
