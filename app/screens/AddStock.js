@@ -61,7 +61,7 @@ export default function AddStock({navigation}) {
           <SafeAreaView style = {styles.header}>
             <Text style = {styles.title}>Add Ticker</Text>
           </SafeAreaView>
-          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 85}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 90}}>
             
             <TextInputBox
               title="Symbol"
@@ -102,7 +102,7 @@ export default function AddStock({navigation}) {
           </View>
           <View style={{flex:1}}></View>
            <View style={{flexDirection:'row'}}>
-            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.neutralButton}]}
+            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.neutralButton, borderTopRightRadius: 0}]}
               onPress={() => navigation.navigate('Home', {
                 totShares: totShares,
               })}
@@ -111,7 +111,7 @@ export default function AddStock({navigation}) {
               <Text style = {styles.buttonText}>Back</Text>
             </TouchableHighlight>
 
-            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.primaryMid}]}
+            <TouchableHighlight style={[styles.bottomButtons, {backgroundColor: colors.primaryMid, borderTopLeftRadius: 0}]}
               onPress={() =>  createStockObj()}
               underlayColor={colors.primary}>
             
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('screen').width / 2,
-    height:140,
+    height:130,
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50
   },

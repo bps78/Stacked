@@ -10,11 +10,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import StockListItem from '../components/StockListItem';
 import Stock from '../Stock';
+import handler from '../ApiHandler';
 
 export default function HomeScreen({route, navigation}) {
 
+
   try{
     const{totShares} = route.params;
+    handler();
   } catch (e){
     totShares = 0;
   }
@@ -30,6 +33,8 @@ export default function HomeScreen({route, navigation}) {
   'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
   'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
 });
+
+
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.header}>

@@ -1,12 +1,10 @@
 import './screens/HomeScreen';
 
-const handler =  function() {
+function handler(){
 
 
-  var aaplPrice = 0;
-  var disPrice = 0;
-  global.aaplPrice = aaplPrice;
-  global.disPrice = disPrice;
+
+  const list = global.userStocks;
 
   //API Starter Code
   const finnhub = require('finnhub');
@@ -14,37 +12,37 @@ const handler =  function() {
   api_key.apiKey = "cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0" 
   const finnhubClient = new finnhub.DefaultApi()
 
-  //console.log('Handler Started');
+  console.log('Handler Started');
 
   const socket = new WebSocket('wss://ws.finnhub.io?token=cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0');
   
   socket.addEventListener('open', function (event){
-  //  socket.send(JSON.stringify({'type':'subscribe', 'symbol':'AAPL'}))
-   // socket.send(JSON.stringify({'type':'subscribe', 'symbol':'DIS'}))
+    list.forEach(element => {
+      //Starts the websocket for real-time pricing for each element in userStocks
+      socket.send(JSON.stringify({'type':'subscribe', 'symbol': element.symbol}));
+
+      //Sets the open price for the elements in the userStocks Array
+      finnhubClient.quote(element.symbol, (error, data, response) => {
+        const index = element.index - 1;
+        let newList = global.userStocks;
+        newList[index].openPrice = data.o;
+        global.userStocks = newList;
+      });
+    });
+   
   });
 
   socket.addEventListener('message', function (event){
     const obj = JSON.parse(event.data);
   
     try{
-      if(obj.data[0].p != '0' && obj.data[0].s == 'AAPL'){  //Below Handles AAPL Data Responses
-        global.aaplPrice = obj.data[0].p;
-      }
-
-      if(obj.data[0].p != '0' && obj.data[0].s == 'DIS'){  //Below Handles DIS Data Responses
-       global.disPrice = obj.data[0].p;
+      if(obj.data[0].p != '0'){  //Below Handles Data Responses
+        console.log(obj.data[0].s, obj.data[0].p);
       }
     }catch (e){
       console.log('Handler: No data')
     }
-    //console.log(obj.data[0].s, global.aaplPrice);
   });
-
-
-/**   finnhubClient.quote("AAPL", (error, data, response) => {
-    console.log(data)
-  });
-*/
   
 }
 

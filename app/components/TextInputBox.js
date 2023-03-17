@@ -23,6 +23,8 @@ function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunctio
             maxLength={length}
             keyboardType={inputType}
             autoCapitalize={autoCap}
+            autoCorrect={false}
+            autoComplete={false}
             />
             </View>
           </View>
