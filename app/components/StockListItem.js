@@ -4,13 +4,13 @@ import { TextInput } from 'react-native-gesture-handler';
 import { Entypo } from '@expo/vector-icons';
 import colors from '../config/colors';
 
-function StockListItem({symbol, onCaratPress}) {
+function StockListItem({symbol, onCaratPress, openPrice, curPrice}) {
   return(
     <View style={styles.container}>
       <View style={{width: 125}}>
-        <Text style={{color:'white', fontFamily: 'Lexend-Medium', fontSize: 32}}>{symbol}</Text>
+        <Text style={{color:'white', fontFamily: 'Lexend-Medium', fontSize: 34}}>{symbol}</Text>
       </View>
-        <View style={styles.changeBox}><Text style={styles.changeText}>$3.45</Text></View>
+        <View style={styles.changeBox}><Text style={styles.changeText}>${(curPrice - openPrice).toFixed(2)}</Text></View>
        <Pressable
         onPress={onCaratPress}
         style = {{marginLeft: 10}}>
@@ -39,7 +39,7 @@ function StockListItem({symbol, onCaratPress}) {
         changeText:{
           fontFamily: 'Lexend-Medium',
           color: 'white',
-          fontSize: 28
+          fontSize: 30
         }
     })
     export default StockListItem;      

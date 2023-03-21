@@ -6,7 +6,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
 import PercentageCircle from 'react-native-percentage-circle'; //npm i react-native-percentage-circle
 import './HomeScreen';
-import './AddStock';
+
 
 export default function DetailScreen({route, navigation}) {
 

@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react';
 import { Button, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import {useFonts} from 'expo-font';
 import colors from '../config/colors';
-import '../../App';
-import './AddStock';
-import '../ApiHandler';
 import { SafeAreaView } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
 import {TouchableHighlight} from 'react-native-gesture-handler';
@@ -14,32 +11,61 @@ import handler from '../ApiHandler';
 
 export default function HomeScreen({route, navigation}) {
 
+  const [fontsLoaded] = useFonts({
+    'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
+    'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
+  });
 
+  const [userStocks, setUserStocks] = useState([]);
+    const interval = setInterval(() => {
+      global.userStocks = userStocks;
+     }, 1500);
+
+
+
+  
+  
+  let portValue = 0;
+  //console.log(userStocks);
+  let sum = portValue;
+  const length = userStocks.length;
+
+
+  
+  
   try{
     const{totShares} = route.params;
     handler();
+
   } catch (e){
     totShares = 0;
   }
+
+  try{
+    for(let i = 0; i < length; i++){
+      const element = userStocks[i];
+      sum +=(Number(element.curPrice).toFixed(0) * Number(element.shares));
+    }
+    portValue = sum;
+  }
+  catch(e){
+    console.log('Sum Not Working :(')
+  }
   
 
-  const[userStocks, setUserStocks] = useState([]);
-  global.userStocks = userStocks;
+  
 
  //Import Custom Fonts
  const [dayView,setDayView] = useState(true);
 
- const [fontsLoaded] = useFonts({
-  'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
-  'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
-});
+
 
 
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.header}>
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 70, marginTop: 20}}>$7,238</Text>
+                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 65, marginTop: 20}}>${portValue.toLocaleString()}</Text>
                 <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>+47.34</Text>
               </View>
             </SafeAreaView>
@@ -61,6 +87,9 @@ export default function HomeScreen({route, navigation}) {
             renderItem= {({item}) => 
               <StockListItem
                symbol= {item.symbol}
+               openPrice= {item.openPrice}
+               curPrice= {item.curPrice}
+
                onCaratPress={() => navigation.navigate('Detail', {
                 symbol: item.symbol,
                 purPrice: item.avgPrice,

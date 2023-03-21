@@ -7,7 +7,6 @@ import TextInputBox from '../components/TextInputBox.js';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
-import '../../App';
 import './HomeScreen';
 import './DetailScreen';
 
@@ -35,7 +34,7 @@ export default function AddStock({navigation}) {
      const len = newList.length + 1;
      const newStock = {
      shares: shares,
-     symbol: symbol,
+     symbol: symbol.toUpperCase(),
      avgPrice: price,
      index: len,
      curPrice: 0,

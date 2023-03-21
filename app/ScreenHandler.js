@@ -12,6 +12,7 @@ const ScreenHandler = () => {
     'Lexend-Regular': require('../app/assets/fonts/Lexend-Regular.ttf'),
     'Lexend-Medium': require('../app/assets/fonts/Lexend-Medium.ttf'),
   });
+  
     return (
       <NavigationContainer>
         <Stack.Navigator>
