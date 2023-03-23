@@ -13,7 +13,7 @@ function handler(){
   api_key.apiKey = "cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0" 
   const finnhubClient = new finnhub.DefaultApi()
 
-  console.log('Handler Started');
+ // console.log('Handler Started');
 
   const socket = new WebSocket('wss://ws.finnhub.io?token=cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0');
   

@@ -52,6 +52,9 @@ export default function AddStock({navigation}) {
      console.log('Stock Added');
      console.log(global.userStocks);
     
+     navigation.navigate('Home', {
+      totShares: totShares,
+    })
   }
 
     return(

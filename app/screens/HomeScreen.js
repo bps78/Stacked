@@ -17,18 +17,20 @@ export default function HomeScreen({route, navigation}) {
   });
 
   const [userStocks, setUserStocks] = useState([]);
-    const interval = setInterval(() => {
-      global.userStocks = userStocks;
-     }, 1500);
+  
+   global.userStocks = userStocks;
+
 
 
 
   
   
   let portValue = 0;
+  let totChange = 0;
+  let dayChange = 0;
   //console.log(userStocks);
-  let sum = portValue;
-  const length = userStocks.length;
+ 
+  const length = global.userStocks.length;
 
 
   
@@ -44,9 +46,14 @@ export default function HomeScreen({route, navigation}) {
   try{
     for(let i = 0; i < length; i++){
       const element = userStocks[i];
-      sum +=(Number(element.curPrice).toFixed(0) * Number(element.shares));
+      portValue += (Number(element.curPrice) * Number(element.shares));
+
+      totChange += (((element.curPrice) -  (element.avgPrice)) * Number(element.shares));
+      dayChange += (((element.curPrice) -  (element.openPrice)) * Number(element.shares));
     }
-    portValue = sum;
+     
+     portValue = Number(portValue.toFixed(0)).toLocaleString();
+
   }
   catch(e){
     console.log('Sum Not Working :(')
@@ -60,21 +67,36 @@ export default function HomeScreen({route, navigation}) {
 
 
 
+ const dayChangePos = (dayChange >= 0);
+ const totChangePos = (totChange >= 0);
+
+ totChange = (totChangePos? '+' : '') + totChange.toFixed(2);
+ dayChange = (dayChangePos? '+' : '') + dayChange.toFixed(2);
+
+ 
+
+ let headerColor = colors.primary;
+ if(dayView){
+   headerColor = dayChangePos? colors.primary : colors.secondary;
+ }else{
+   headerColor = totChangePos? colors.primary : colors.secondary;
+ }
+
 
     return (
         <View style={styles.container}>
-            <SafeAreaView style={styles.header}>
+            <SafeAreaView style={[styles.header, {backgroundColor: headerColor}]}>
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 65, marginTop: 20}}>${portValue.toLocaleString()}</Text>
-                <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>+47.34</Text>
+                <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>{dayView ? dayChange : totChange}</Text>
               </View>
             </SafeAreaView>
 
             <View style={{flexDirection: 'row'}}>
-              <Pressable onPress={() => setDayView(true)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.primaryDark : colors.neutralButton, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
+              <Pressable onPress={() => setDayView(true)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutral : colors.neutralButton, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>
                 <Text style={styles.viewChangeText}>Day</Text>
               </Pressable>
-              <Pressable onPress = {() => setDayView(false)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutralButton : colors.primaryDark, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
+              <Pressable onPress = {() => setDayView(false)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutralButton : colors.neutral, borderTopRightRadius: 20, borderBottomRightRadius: 20}]}>
                 <Text style={styles.viewChangeText}>Total</Text>
               </Pressable>
             </View>
@@ -82,13 +104,17 @@ export default function HomeScreen({route, navigation}) {
             <FlatList
             keyExtractor={item => item.index}
             style={styles.flatList}
-            data={userStocks}
+            data={global.userStocks}
+            //extraData={global.userStocks}
             //keyExtractor= { (stock, stock.id) => stock.index.toString()}
             renderItem= {({item}) => 
               <StockListItem
                symbol= {item.symbol}
                openPrice= {item.openPrice}
                curPrice= {item.curPrice}
+               dayView={dayView}
+               purPrice={item.avgPrice}
+               shares={item.shares}
 
                onCaratPress={() => navigation.navigate('Detail', {
                 symbol: item.symbol,
@@ -143,7 +169,7 @@ export default function HomeScreen({route, navigation}) {
         marginBottom: 20
       },
       viewChangeText:{
-        color: 'lightgrey',
+        color: 'black',
         fontFamily: 'Lexend-Medium',
         fontSize: 16
       },
@@ -157,7 +183,8 @@ export default function HomeScreen({route, navigation}) {
         borderTopLeftRadius: 70
       },
       flatList:{
-        marginTop: 30
+        marginTop: 12,
+    
       }
     });
     
