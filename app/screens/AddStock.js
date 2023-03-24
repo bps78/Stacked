@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, Dimensions, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Dimensions, Keyboard, TouchableWithoutFeedback, Modal } from 'react-native';
 import Stock from '../Stock.js';
 import colors from '../config/colors.js'
 import TextInputBox from '../components/TextInputBox.js';
@@ -16,6 +16,12 @@ import './DetailScreen';
 export default function AddStock({navigation}) {
     
 
+  //API Starter Code
+  const finnhub = require('finnhub');
+  const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+  api_key.apiKey = "cfnqd0pr01qr96uomd9gcfnqd0pr01qr96uomda0" 
+  const finnhubClient = new finnhub.DefaultApi()
+
   //Text Input Values
   let totShares = 0;
   
@@ -30,31 +36,43 @@ export default function AddStock({navigation}) {
   });
 
   function createStockObj(){
-     let newList = global.userStocks;
-     const len = newList.length + 1;
-     const newStock = {
-     shares: shares,
-     symbol: symbol.toUpperCase(),
-     avgPrice: price,
-     index: len,
-     curPrice: 0,
-     dateBought: new Date().toDateString(),
-     openPrice: 0,
-     }
-     
-     newList.push(newStock);
-     global.userStocks= newList;
-     
-     let shareSum = global.totShares;
-     shareSum += Number(shares);
-     global.totShares = Number(shareSum);
+  
+     finnhubClient.quote(symbol, (error, data, response) => {  //Checks to see if the user entered a valid symbol
+  
+      if(data.c == 0 || shares == 0 || price == 0){
+        console.log('Detail: Invalid Entry') // TODO: Use Modals to display pop up when there's invalid entry
+        
 
-     console.log('Stock Added');
-     console.log(global.userStocks);
+      }else{
+        let newList = global.userStocks;
+        const len = newList.length + 1;
+        const newStock = {
+        shares: shares,
+        symbol: symbol.toUpperCase(),
+        avgPrice: price,
+        index: len,
+        curPrice: 0,
+        dateBought: new Date().toDateString(),
+        openPrice: 0,
+        }
+        
+        newList.push(newStock);
+        global.userStocks= newList;
+        
+        let shareSum = global.totShares;
+        shareSum += Number(shares);
+        global.totShares = Number(shareSum);
+   
+        console.log('Stock Added');
+        console.log(global.userStocks);
+
+          navigation.navigate('Home', {
+            totShares: totShares,
+          })
+      }
+    });
     
-     navigation.navigate('Home', {
-      totShares: totShares,
-    })
+     
   }
 
     return(

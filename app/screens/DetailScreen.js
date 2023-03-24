@@ -10,18 +10,22 @@ import './HomeScreen';
 
 export default function DetailScreen({route, navigation}) {
 
-    const{symbol, purPrice, shares, totShares, date} = route.params;
+    const{symbol, purPrice, shares, totShares, date, curPrice, upOnDay} = route.params;
 
+
+    const pLValue = Math.abs((curPrice - purPrice) * shares).toFixed(2);
+    const pLPercent = ((curPrice - purPrice)/ purPrice) * 100;
+    const pLPositive = (pLPercent >= 0);
     const sharePercent = ((shares/totShares) * 100).toFixed(0);
-    console.log('TotShares', totShares);
+ 
  
 
     return(
         <View style={styles.container}>
-             <SafeAreaView style={styles.header}>
+             <SafeAreaView style={[styles.header, {backgroundColor: (upOnDay? colors.primary: colors.secondary)}]}>
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 70, marginTop: 20}}>{symbol}</Text>
-                <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>153.23</Text>
+                <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>{curPrice.toFixed(2)}</Text>
               </View>
             </SafeAreaView>
 
@@ -49,20 +53,20 @@ export default function DetailScreen({route, navigation}) {
 
             <View style={{flexDirection: 'row', marginTop: 40, alignItems: 'center', height: 80}}>
                 <Text style={styles.sectionHeader}>P/L</Text>
-                <View style={[styles.neutralBox, {width: 130, backgroundColor:colors.primary, marginLeft: 20}]}>
-                    <Text style={styles.dataText}>$314.23</Text>
+                <View style={[styles.neutralBox, {width: 130, backgroundColor:(pLPositive? colors.primary: colors.secondary), marginLeft: 20}]}>
+                    <Text style={styles.dataText}>${pLValue}</Text>
                 </View>
 
                 <View style={{marginLeft: 30}}>
                 <PercentageCircle
                 radius={38}
-                percent={75}
-                color={colors.primary}
+                percent={Math.abs(pLPercent)}
+                color={pLPositive? colors.primary: colors.secondary}
                 innerColor={colors.background} 
                 bgcolor={colors.neutralButton}
                 borderWidth={7}>
                   
-                  <Text style={[styles.percentageText, {color:colors.primary}]}>{75}%</Text>
+                  <Text style={[styles.percentageText, {color:(pLPositive? colors.primary: colors.secondary)}]}>{pLPercent.toFixed()}%</Text>
                 </PercentageCircle>
                 </View>
             </View> 

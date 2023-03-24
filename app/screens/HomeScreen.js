@@ -105,8 +105,7 @@ export default function HomeScreen({route, navigation}) {
             keyExtractor={item => item.index}
             style={styles.flatList}
             data={global.userStocks}
-            //extraData={global.userStocks}
-            //keyExtractor= { (stock, stock.id) => stock.index.toString()}
+            showsVerticalScrollIndicator={false}
             renderItem= {({item}) => 
               <StockListItem
                symbol= {item.symbol}
@@ -122,6 +121,9 @@ export default function HomeScreen({route, navigation}) {
                 shares: item.shares,
                 totShares: totShares,
                 date: item.dateBought,
+                curPrice: item.curPrice,
+                openPrice: item.openPrice,
+                upOnDay: (item.curPrice >= item.openPrice),
                })}
                />
 

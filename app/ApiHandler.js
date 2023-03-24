@@ -42,8 +42,6 @@ function handler(){
     try{
       if(obj.data[0].p != '0'){  //Below Handles Data Responses
 
-        //console.log(obj.data[0].s, obj.data[0].p);
-
         const index = symOrder.indexOf(obj.data[0].s);
         let newList = global.userStocks;
         newList[index].curPrice = obj.data[0].p;
