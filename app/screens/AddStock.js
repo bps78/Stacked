@@ -29,19 +29,34 @@ export default function AddStock({navigation}) {
   const[shares, setShares] = useState(0);
   const[price, setPrice] = useState(0.0);
 
+  //Modal Bool
+  const[modalVisible, setModalVisible] = useState(false);
+
   //Import Custom Fonts
   const [fontsLoaded] = useFonts({
     'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
     'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf')
   });
 
+  const[errorText, setErrorText] = useState(""); //Contains desc of user's failed entry if any
+
   function createStockObj(){
   
      finnhubClient.quote(symbol, (error, data, response) => {  //Checks to see if the user entered a valid symbol
-  
-      if(data.c == 0 || shares == 0 || price == 0){
-        console.log('Detail: Invalid Entry') // TODO: Use Modals to display pop up when there's invalid entry
-        
+     
+
+      if(symbol == "" || data.c == 0){
+        console.log('Detail: Invalid Symbol');
+        setModalVisible(true);
+        setErrorText("The Symbol You Entered is Invalid");
+      }else if(shares == 0){
+        console.log('Detail: Invalid Shares');
+        setModalVisible(true);
+        setErrorText("Number of Shares Field is Required");
+      }else if(price == 0){
+        console.log('Detail: Invalid Price');
+        setModalVisible(true);
+        setErrorText("Price Field is Required");
 
       }else{
         let newList = global.userStocks;
@@ -54,17 +69,35 @@ export default function AddStock({navigation}) {
         curPrice: 0,
         dateBought: new Date().toDateString(),
         openPrice: 0,
+        lots: 1,
         }
         
+        let isDupe = false;
+        //Check for Dupes
+        for(let i = 0; i < newList.length; i++){
+          if(newList[i].symbol == symbol.toUpperCase()){
+            const totThisShares =  Number(newList[i].shares) + Number(shares);
+            newList[i].avgPrice = (Number(newList[i].avgPrice * newList[i].shares) + Number(price * shares))/ totThisShares;
+            newList[i].shares = totThisShares;
+            
+            
+            
+            isDupe = true;
+          }
+        }
+        
+        if(!isDupe){
         newList.push(newStock);
         global.userStocks= newList;
         
-        let shareSum = global.totShares;
-        shareSum += Number(shares);
-        global.totShares = Number(shareSum);
+        
    
         console.log('Stock Added');
         console.log(global.userStocks);
+        }
+        let shareSum = global.totShares;
+        shareSum += Number(shares);
+        global.totShares = Number(shareSum);
 
           navigation.navigate('Home', {
             totShares: totShares,
@@ -78,10 +111,32 @@ export default function AddStock({navigation}) {
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style = {styles.container}>
+          <Modal
+              animationType='slide'
+              visible={modalVisible}
+              transparent={true}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+          >
+            <View style={styles.modal}>
+              <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 20, textAlign: 'center', margin: 20}}>{errorText}</Text>
+              <TouchableHighlight
+                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
+                onPress={() => setModalVisible(!modalVisible)}
+                underlayColor={colors.neutralButtonHighlight}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </Modal>
+
+
           <SafeAreaView style = {styles.header}>
             <Text style = {styles.title}>Add Ticker</Text>
           </SafeAreaView>
           <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 90}}>
+
+           
             
             <TextInputBox
               title="Symbol"
@@ -118,6 +173,8 @@ export default function AddStock({navigation}) {
               inputType='decimal-pad'
               >
             </TextInputBox>
+
+          
 
           </View>
           <View style={{flex:1}}></View>
@@ -176,6 +233,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Lexend-Medium',
     fontSize: 32,
     color: 'white',
+  },
+  modal:{
+    width: 290,
+    height: 230,
+    backgroundColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: Dimensions.get('screen').height / 2 - 115,
+    borderRadius: 30,
+
   }
 });
 

@@ -75,7 +75,7 @@ export default function DetailScreen({route, navigation}) {
             <View style={{flexDirection: 'row', marginTop: 40, alignItems: 'center', height: 80}}>
                <Text style={[styles.sectionHeader, {marginRight: 20}]}>Avg. Purchase</Text>
                <View style={styles.neutralBox}>
-                  <Text style={styles.dataText}>${purPrice}</Text>
+                  <Text style={[styles.dataText, {fontSize: 22}]}>${purPrice.toFixed(1)}</Text>
                </View>
             </View>
 
