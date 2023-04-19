@@ -66,9 +66,9 @@ export default function AddStock({navigation}) {
         symbol: symbol.toUpperCase(),
         avgPrice: price,
         index: len,
-        curPrice: 0,
+        curPrice: data.c,
         dateBought: new Date().toDateString(),
-        openPrice: 0,
+        openPrice: data.pc,
         lots: 1,
         }
         

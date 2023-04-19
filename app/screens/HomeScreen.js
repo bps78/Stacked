@@ -82,6 +82,9 @@ export default function HomeScreen({route, navigation}) {
    headerColor = totChangePos? colors.primary : colors.secondary;
  }
 
+  
+
+
 
     return (
         <View style={styles.container}>

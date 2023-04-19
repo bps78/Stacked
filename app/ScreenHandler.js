@@ -3,7 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddStock from './screens/AddStock';
 import HomeScreen from './screens/HomeScreen';
 import DetailScreen from './screens/DetailScreen';
+import AuthScreen from './screens/AuthScreen';
 import {useFonts} from 'expo-font';
+import { ClerkProvider } from '@clerk/clerk-expo';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +18,11 @@ const ScreenHandler = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="Home"
             component={HomeScreen}
