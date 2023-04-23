@@ -1,14 +1,16 @@
 import * as React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 import { useClerk, useSignUp } from "@clerk/clerk-expo";
 import colors from "../config/colors";
 import { StyleSheet } from "react-native";
+import { TouchableHighlight, TouchableWithoutFeedback } from "react-native";
 
 
 export default function SignUpScreen({navigation}){
   const { isLoaded, signUp, setSession } = useSignUp();
 
-  const [code, setCode] = React.useState("");
+  const [code, setCode] = useState("");
 
   const onPress = async () => {
     if (!isLoaded) {
@@ -21,6 +23,7 @@ export default function SignUpScreen({navigation}){
       });
 
       await setSession(completeSignUp.createdSessionId);
+      navigation.navigate('Home');
     } catch (err) {
       console.log("Error:> " + err?.status || "");
       console.log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
@@ -28,13 +31,19 @@ export default function SignUpScreen({navigation}){
   };
 
   return (
+   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
-     <Text>Verify Code Screen</Text>
-     {// TODO 
-            //Create Screen for verifying email code
-            //Needs:  TextInput and Button
-     }
+     <Text style={{marginTop: 90, color: 'white'}}>Enter the Code Sent to Your Email</Text>
+     <TextInput 
+      value={code}
+      placeholder="Code"
+      onChangeText={(code) => setCode(code)}/>
+
+     <TouchableHighlight onPress={onPress}>
+      <Text>Verify Email</Text>
+     </TouchableHighlight>
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 

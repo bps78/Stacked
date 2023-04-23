@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, Button, Image, TouchableHighlight, Pressable} from 'react-native';
+import {Text, View, StyleSheet, Button, Image, TouchableHighlight, Pressable, Keyboard} from 'react-native';
 import colors from '../config/colors.js'
 import { useState } from 'react';
 import TextInputBox from '../components/TextInputBox.js';
@@ -6,6 +6,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Dimensions } from 'react-native';
 import {useFonts} from 'expo-font';
 import { useSignUp } from '@clerk/clerk-expo';
+import { TouchableWithoutFeedback } from 'react-native';
 
 
 
@@ -74,6 +75,7 @@ export default function AuthScreen({navigation}) {
             
      
     return(
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style = {styles.container}>
             <View style={styles.header}>
                 <Image
@@ -131,7 +133,7 @@ export default function AuthScreen({navigation}) {
            
            </View>
         </View>
-
+      </TouchableWithoutFeedback>
 
        
     );
