@@ -8,6 +8,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import StockListItem from '../components/StockListItem';
 import Stock from '../Stock';
 import handler from '../ApiHandler';
+import { useClerk, useAuth } from '@clerk/clerk-expo';
 
 export default function HomeScreen({route, navigation}) {
 
@@ -84,7 +85,11 @@ export default function HomeScreen({route, navigation}) {
 
   
 
+const { signOut} = useAuth();
 
+const onSignOutPress = async () =>{
+  await signOut();
+}
 
     return (
         <View style={styles.container}>
@@ -94,6 +99,12 @@ export default function HomeScreen({route, navigation}) {
                 <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>{dayView ? dayChange : totChange}</Text>
               </View>
             </SafeAreaView>
+
+
+            <Button onPress={onSignOutPress} title={'Sign Out'}>
+
+            </Button>
+
 
             <View style={{flexDirection: 'row'}}>
               <Pressable onPress={() => setDayView(true)} style={[styles.viewSelectButton,{backgroundColor: dayView? colors.neutral : colors.neutralButton, borderTopLeftRadius: 20, borderBottomLeftRadius: 20}]}>

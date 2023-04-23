@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 
-function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunction,length,inputType,autoCap}) {
+function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunction,length,inputType,autoCap, secureText}) {
 
   
 
@@ -25,6 +25,7 @@ function TextInputBox({title, color, rectWidth, rectHeight, iconName, setFunctio
             autoCapitalize={autoCap}
             autoCorrect={false}
             autoComplete={false}
+            secureTextEntry={secureText}
             />
             </View>
           </View>

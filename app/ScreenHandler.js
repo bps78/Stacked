@@ -4,6 +4,7 @@ import AddStock from './screens/AddStock';
 import HomeScreen from './screens/HomeScreen';
 import DetailScreen from './screens/DetailScreen';
 import AuthScreen from './screens/AuthScreen';
+import VerifyCode from './screens/VerifyCode';
 import {useFonts} from 'expo-font';
 import { ClerkProvider } from '@clerk/clerk-expo';
 
@@ -21,6 +22,11 @@ const ScreenHandler = () => {
         <Stack.Screen
             name="Auth"
             component={AuthScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="VerifyCode"
+            component={VerifyCode}
             options={{headerShown: false}}
           />
           <Stack.Screen
