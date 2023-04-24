@@ -67,7 +67,7 @@ export default function AuthScreen({navigation}) {
 
               navigation.navigate('VerifyCode');
             }catch (err){
-              console.log('ERROR > ', err);
+              console.log('ERROR > ', (err.errors? err.errors[0].message : err));
             }
           };
      
@@ -105,6 +105,7 @@ export default function AuthScreen({navigation}) {
               rectHeight = {80}
               iconName='user'
               setFunction={setEmailAddress}
+              textSize={20}
               >
             
             </TextInputBox>
@@ -117,6 +118,7 @@ export default function AuthScreen({navigation}) {
               iconName='lock'
               setFunction={setPassword}
               secureText={true}
+              textSize={20}
               >
             
             </TextInputBox>

@@ -22,8 +22,9 @@ export default function SignUpScreen({navigation}){
         code,
       });
 
+  
       await setSession(completeSignUp.createdSessionId);
-      navigation.navigate('Home');
+      navigation.replace('Home');
     } catch (err) {
       console.log("Error:> " + err?.status || "");
       console.log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);

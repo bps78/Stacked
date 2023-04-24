@@ -9,6 +9,7 @@ import AuthScreen from './app/screens/AuthScreen.js';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 
+
 const tokenCache = {
   getToken(key) { 
     try {
@@ -46,12 +47,7 @@ export default function App() {
     if(fontsLoaded){
   return (
       <ClerkProvider publishableKey={key} tokenCache={tokenCache}>
-        <SignedOut>
-          <ScreenHandler/>
-        </SignedOut>
-        <SignedIn>
-          <HomeScreen/>
-        </SignedIn>
+        <ScreenHandler/>
       </ClerkProvider>
       
   );}

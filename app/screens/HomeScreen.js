@@ -9,6 +9,7 @@ import StockListItem from '../components/StockListItem';
 import Stock from '../Stock';
 import handler from '../ApiHandler';
 import { useClerk, useAuth } from '@clerk/clerk-expo';
+import ScreenHandler from '../ScreenHandler';
 
 export default function HomeScreen({route, navigation}) {
 
