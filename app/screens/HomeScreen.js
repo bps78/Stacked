@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button, Dimensions, Pressable, StyleSheet, Text, View, Modal } from 'react-native';
 import {useFonts} from 'expo-font';
 import colors from '../config/colors';
 import { SafeAreaView } from 'react-navigation';
@@ -8,8 +8,9 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import StockListItem from '../components/StockListItem';
 import Stock from '../Stock';
 import handler from '../ApiHandler';
-import { useClerk, useAuth } from '@clerk/clerk-expo';
+import { useClerk, useAuth, useUser} from '@clerk/clerk-expo';
 import ScreenHandler from '../ScreenHandler';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function HomeScreen({route, navigation}) {
 
@@ -19,6 +20,8 @@ export default function HomeScreen({route, navigation}) {
   });
 
   const [userStocks, setUserStocks] = useState([]);
+
+  const[modalVisible, setModalVisible] = useState(false);
   
    global.userStocks = userStocks;
 
@@ -87,6 +90,7 @@ export default function HomeScreen({route, navigation}) {
   
 
 const { signOut} = useAuth();
+const {user} = useUser();
 
 const onSignOutPress = async () =>{
   await signOut();
@@ -101,8 +105,33 @@ const onSignOutPress = async () =>{
               </View>
             </SafeAreaView>
 
+            <Modal
+              animationType='slide'
+              visible={modalVisible}
+              transparent={true}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+          >
+            <View style={styles.modal}>
+             <FontAwesome5 name="user-alt" size={90} color="white" />
+              <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 20, textAlign: 'center', margin: 20, marginBottom: 40}}>{user.emailAddresses[0].toString()}</Text>
+              <TouchableHighlight
+                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, marginBottom: 20, justifyContent: 'center', alignItems: 'center'}}
+                onPress={onSignOutPress}
+                underlayColor={colors.neutralButtonHighlight}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Sign Out</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
+                onPress={() => setModalVisible(!modalVisible)}
+                underlayColor={colors.neutralButtonHighlight}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </Modal>
 
-            <Button onPress={onSignOutPress} title={'Sign Out'}>
+            <Button onPress={() => setModalVisible(true)} title={'Sign Out'}>
 
             </Button>
 
@@ -201,6 +230,17 @@ const onSignOutPress = async () =>{
       },
       flatList:{
         marginTop: 12,
+    
+      },
+      modal:{
+        width: 330,
+        height: 400,
+        backgroundColor: colors.secondary,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginTop: Dimensions.get('screen').height / 2 - 190,
+        borderRadius: 30,
     
       }
     });
