@@ -11,6 +11,7 @@ import handler from '../ApiHandler';
 import { useClerk, useAuth, useUser} from '@clerk/clerk-expo';
 import ScreenHandler from '../ScreenHandler';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { updateMetaData } from './updateMetaData';
 
 export default function HomeScreen({route, navigation}) {
 
@@ -24,11 +25,6 @@ export default function HomeScreen({route, navigation}) {
   const[modalVisible, setModalVisible] = useState(false);
   
    global.userStocks = userStocks;
-
-
-
-
-  
   
   let portValue = 0;
   let totChange = 0;
@@ -92,17 +88,28 @@ export default function HomeScreen({route, navigation}) {
 const { signOut} = useAuth();
 const {user} = useUser();
 
+
 const onSignOutPress = async () =>{
   await signOut();
 }
 
+const [profButtonPressed, setProfButtonPressed] = useState(false);
+
+
+
     return (
         <View style={styles.container}>
             <SafeAreaView style={[styles.header, {backgroundColor: headerColor}]}>
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 65, marginTop: 20}}>${portValue.toLocaleString()}</Text>
+              <View>
+                <Pressable style={styles.profButton} onPress={() => setModalVisible(true)} onPressIn={() => setProfButtonPressed(true)} onPressOut={() => setProfButtonPressed(false)}>
+                 <FontAwesome5 name="user-alt" size={30} color={profButtonPressed? "lightgray" : "white"}/>
+                </Pressable>
+                
+              <View style={{justifyContent: 'center', width: Dimensions.get('screen').width, alignItems: 'center'}}> 
+                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 65, marginTop: 0}}>${portValue.toLocaleString()}</Text>
                 <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>{dayView ? dayChange : totChange}</Text>
               </View>
+              </View> 
             </SafeAreaView>
 
             <Modal
@@ -117,23 +124,19 @@ const onSignOutPress = async () =>{
              <FontAwesome5 name="user-alt" size={90} color="white" />
               <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 20, textAlign: 'center', margin: 20, marginBottom: 40}}>{user.emailAddresses[0].toString()}</Text>
               <TouchableHighlight
-                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, marginBottom: 20, justifyContent: 'center', alignItems: 'center'}}
+                style={{backgroundColor: colors.secondary, width: 150, height: 45, borderRadius: 25, marginBottom: 20, justifyContent: 'center', alignItems: 'center'}}
                 onPress={onSignOutPress}
-                underlayColor={colors.neutralButtonHighlight}>
-                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Sign Out</Text>
+                underlayColor={colors.secondaryMid}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 16}}>Sign Out</Text>
               </TouchableHighlight>
               <TouchableHighlight
-                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
+                style={{backgroundColor: colors.neutralButton, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
                 onPress={() => setModalVisible(!modalVisible)}
                 underlayColor={colors.neutralButtonHighlight}>
-                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Close</Text>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 16}}>Close</Text>
               </TouchableHighlight>
             </View>
           </Modal>
-
-            <Button onPress={() => setModalVisible(true)} title={'Sign Out'}>
-
-            </Button>
 
 
             <View style={{flexDirection: 'row'}}>
@@ -148,7 +151,7 @@ const onSignOutPress = async () =>{
             <FlatList
             keyExtractor={item => item.index}
             style={styles.flatList}
-            data={global.userStocks}
+            data={userStocks}           //TODO **********************
             showsVerticalScrollIndicator={false}
             renderItem= {({item}) => 
               <StockListItem
@@ -199,9 +202,8 @@ const onSignOutPress = async () =>{
       },
       header:{
         width:Dimensions.get('screen').width,
-        height:190,
+        height:220,
         backgroundColor: colors.primary,
-        alignItems: 'center',
         justifyContent: 'center',
         borderBottomLeftRadius: 70,
         borderBottomRightRadius: 70,
@@ -235,13 +237,16 @@ const onSignOutPress = async () =>{
       modal:{
         width: 330,
         height: 400,
-        backgroundColor: colors.secondary,
+        backgroundColor: colors.primary,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
         marginTop: Dimensions.get('screen').height / 2 - 190,
         borderRadius: 30,
     
-      }
+      },
+      profButton:{
+        marginLeft: 30
+      },
     });
     

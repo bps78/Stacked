@@ -7,14 +7,29 @@ import TextInputBox from '../components/TextInputBox.js';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
+import { useUser } from '@clerk/clerk-expo';
 import './HomeScreen';
 import './DetailScreen';
+import updateMetaData from './updateMetaData.js';
 
 
 
 
 export default function AddStock({navigation}) {
-    
+
+  const { user } =  useUser();
+  const userID = user.id;
+  
+  const firstName = 'Joe'
+  let request = new XMLHttpRequest();
+  request.open("PATCH", 'https://api.clerk.com/v1/users/' + {userID} + '/metadata');
+  
+  var json = JSON.stringify(obj); //TODO ***************************************************
+  request.send(json);
+  console.log(user.publicMetadata);
+
+
+   
 
   //API Starter Code
   const finnhub = require('finnhub');
@@ -90,10 +105,8 @@ export default function AddStock({navigation}) {
         newList.push(newStock);
         global.userStocks= newList;
         
-        
-   
-        console.log('Stock Added');
-        console.log(global.userStocks);
+       
+       
         }
         let shareSum = global.totShares;
         shareSum += Number(shares);
