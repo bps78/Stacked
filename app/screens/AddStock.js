@@ -18,15 +18,9 @@ import updateMetaData from './updateMetaData.js';
 export default function AddStock({navigation}) {
 
   const { user } =  useUser();
-  const userID = user.id;
   
-  const firstName = 'Joe'
-  let request = new XMLHttpRequest();
-  request.open("PATCH", 'https://api.clerk.com/v1/users/' + {userID} + '/metadata');
-  
-  var json = JSON.stringify(obj); //TODO ***************************************************
-  request.send(json);
-  console.log(user.publicMetadata);
+
+ 
 
 
    
@@ -112,13 +106,31 @@ export default function AddStock({navigation}) {
         shareSum += Number(shares);
         global.totShares = Number(shareSum);
 
-          navigation.navigate('Home', {
-            totShares: totShares,
-          })
+         
       }
     });
     
-     
+    const userID = user.id;
+    
+    const obj = {public_metadata: {"Data": JSON.stringify(global.userStocks), "totalShares" : totShares}};
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer sk_test_kDK8pIxifMpw37PnQ3eNeBCsdrMvvwPu2knTLGwcVK");
+    headers.append("Content-Type", "application/json");
+  
+   const request = new Request('https://api.clerk.com/v1/users/' + userID, {
+      method: "PATCH",
+      body: JSON.stringify(obj),
+      headers: headers,
+   });
+  
+  
+    fetch(request).then((response) => {
+    console.log('Request Status: ' + response.status)
+   });
+
+   navigation.navigate('Home', {
+    totShares: totShares,
+  })
   }
 
     return(

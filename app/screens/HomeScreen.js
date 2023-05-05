@@ -20,22 +20,25 @@ export default function HomeScreen({route, navigation}) {
     'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
   });
 
+  const {user} = useUser();
+
   const [userStocks, setUserStocks] = useState([]);
 
   const[modalVisible, setModalVisible] = useState(false);
   
    global.userStocks = userStocks;
-  
+   const userMetaStocks = (JSON.parse(user.publicMetadata.Data));
+   
   let portValue = 0;
   let totChange = 0;
   let dayChange = 0;
   //console.log(userStocks);
  
-  const length = global.userStocks.length;
+  const length = userMetaStocks.length;
 
 
   
-  
+
   try{
     const{totShares} = route.params;
     handler();
@@ -46,11 +49,11 @@ export default function HomeScreen({route, navigation}) {
 
   try{
     for(let i = 0; i < length; i++){
-      const element = userStocks[i];
-      portValue += (Number(element.curPrice) * Number(element.shares));
+      
+      portValue += (Number(userMetaStocks[i].curPrice) * Number(userMetaStocks[i].shares));
 
-      totChange += (((element.curPrice) -  (element.avgPrice)) * Number(element.shares));
-      dayChange += (((element.curPrice) -  (element.openPrice)) * Number(element.shares));
+      totChange += (((userMetaStocks[i].curPrice) -  (userMetaStocks[i].avgPrice)) * Number(userMetaStocks[i].shares));
+      dayChange += (((userMetaStocks[i].curPrice) -  (userMetaStocks[i].openPrice)) * Number(userMetaStocks[i].shares));
     }
      
      portValue = Number(portValue.toFixed(0)).toLocaleString();
@@ -86,7 +89,7 @@ export default function HomeScreen({route, navigation}) {
   
 
 const { signOut} = useAuth();
-const {user} = useUser();
+
 
 
 const onSignOutPress = async () =>{
@@ -106,7 +109,7 @@ const [profButtonPressed, setProfButtonPressed] = useState(false);
                 </Pressable>
                 
               <View style={{justifyContent: 'center', width: Dimensions.get('screen').width, alignItems: 'center'}}> 
-                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 65, marginTop: 0}}>${portValue.toLocaleString()}</Text>
+                <Text style={{fontFamily: 'Lexend-Medium', color:'white', fontSize: 70, marginTop: 0}}>${portValue.toLocaleString()}</Text>
                 <Text style={{fontFamily: 'Lexend-Medium', color:'lightgray', fontSize: 45}}>{dayView ? dayChange : totChange}</Text>
               </View>
               </View> 
@@ -151,7 +154,7 @@ const [profButtonPressed, setProfButtonPressed] = useState(false);
             <FlatList
             keyExtractor={item => item.index}
             style={styles.flatList}
-            data={userStocks}           //TODO **********************
+            data={userMetaStocks}           
             showsVerticalScrollIndicator={false}
             renderItem= {({item}) => 
               <StockListItem
