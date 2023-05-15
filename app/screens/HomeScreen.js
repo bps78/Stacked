@@ -26,26 +26,36 @@ export default function HomeScreen({route, navigation}) {
 
   const[modalVisible, setModalVisible] = useState(false);
   
-   global.userStocks = userStocks;
-   const userMetaStocks = (JSON.parse(user.publicMetadata.Data));
    
+  const [userMetaStocks, setUserMetaStocks] = useState((JSON.parse(user.publicMetadata.Data)));
   let portValue = 0;
   let totChange = 0;
   let dayChange = 0;
   //console.log(userStocks);
+
+global.userStocks = userMetaStocks;
  
+  
   const length = userMetaStocks.length;
 
-
+  const userID = user.id;
+       const obj = {public_metadata: {"Data": JSON.stringify(global.userStocks)}};
+       const headers = new Headers();
+       headers.append("Authorization", "Bearer sk_test_kDK8pIxifMpw37PnQ3eNeBCsdrMvvwPu2knTLGwcVK");
+       headers.append("Content-Type", "application/json");
   
+       const request = new Request('https://api.clerk.com/v1/users/' + userID, {
+         method: "PATCH",
+         body: JSON.stringify(obj),
+         headers: headers,
+      });
+  
+  
+        fetch(request).then((response) => {
+          console.log('Request Status: ' + response.status)
+      });
 
-  try{
-    const{totShares} = route.params;
-    handler();
-
-  } catch (e){
-    totShares = 0;
-  }
+  console.log(global.userStocks);
 
   try{
     for(let i = 0; i < length; i++){
@@ -99,7 +109,7 @@ const onSignOutPress = async () =>{
 const [profButtonPressed, setProfButtonPressed] = useState(false);
 
 
-
+handler();
     return (
         <View style={styles.container}>
             <SafeAreaView style={[styles.header, {backgroundColor: headerColor}]}>
@@ -154,7 +164,8 @@ const [profButtonPressed, setProfButtonPressed] = useState(false);
             <FlatList
             keyExtractor={item => item.index}
             style={styles.flatList}
-            data={userMetaStocks}           
+            onRefresh={() => handler()}
+            data={global.userStocks}           
             showsVerticalScrollIndicator={false}
             renderItem= {({item}) => 
               <StockListItem
@@ -169,7 +180,6 @@ const [profButtonPressed, setProfButtonPressed] = useState(false);
                 symbol: item.symbol,
                 purPrice: item.avgPrice,
                 shares: item.shares,
-                totShares: totShares,
                 date: item.dateBought,
                 curPrice: item.curPrice,
                 openPrice: item.openPrice,

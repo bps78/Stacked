@@ -4,10 +4,11 @@ import {useFonts} from 'expo-font' //npm i expo-font
 import { useState, useEffect } from 'react';
 import ScreenHandler from './app/ScreenHandler.js';
 import HomeScreen from './app/screens/HomeScreen.js';
-import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
+import { ClerkProvider, SignedIn, useUser } from '@clerk/clerk-expo';
 import AuthScreen from './app/screens/AuthScreen.js';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
+
 
 
 const tokenCache = {
@@ -34,12 +35,16 @@ const key = 'pk_test_d29ya2luZy1zaGFkLTE3LmNsZXJrLmFjY291bnRzLmRldiQ';
 
 
 export default function App() {
+
+  //const {user} = useUser();
   
 
  const [fontsLoaded] = useFonts({
     'Lexend-Regular': require('./app/assets/fonts/Lexend-Regular.ttf'),
     'Lexend-Medium': require('./app/assets/fonts/Lexend-Medium.ttf'),
   });
+  let userStocks = [];
+  global.userStocks = userStocks;
 
 
 

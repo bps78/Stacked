@@ -4,18 +4,25 @@ import TextInputBox from '../components/TextInputBox.js';
 import { SafeAreaView } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import {useFonts} from 'expo-font';
+import { useUser } from '@clerk/clerk-expo';
 import PercentageCircle from 'react-native-percentage-circle'; //npm i react-native-percentage-circle
 import './HomeScreen';
 
 
 export default function DetailScreen({route, navigation}) {
 
-    const{symbol, purPrice, shares, totShares, date, curPrice, upOnDay} = route.params;
+    const {user}  = useUser();
+
+    const{symbol, purPrice, shares, date, curPrice, upOnDay} = route.params;
 
 
     const pLValue = Math.abs((curPrice - purPrice) * shares).toFixed(2);
     const pLPercent = ((curPrice - purPrice)/ purPrice) * 100;
     const pLPositive = (pLPercent >= 0);
+    let totShares = 0;
+    JSON.parse(user.publicMetadata.Data).forEach(element => {
+      totShares += Number(element.shares);
+    });
     const sharePercent = ((shares/totShares) * 100).toFixed(0);
  
  

@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import {useFonts} from 'expo-font';
 import { useSignUp } from '@clerk/clerk-expo';
 import { TouchableWithoutFeedback } from 'react-native';
+import { Modal } from 'react-native';
 
 
 
@@ -20,6 +21,9 @@ export default function AuthScreen({navigation}) {
      const { signIn, setSession} = useSignIn();
      const {signUp} = useSignUp();
       
+       //Modal Bool
+     const[modalVisible, setModalVisible] = useState(false);
+     const[errorText, setErrorText] = useState("");
 
      const [emailAddress, setEmailAddress] = useState("");
      const [password, setPassword] = useState("");
@@ -47,6 +51,8 @@ export default function AuthScreen({navigation}) {
             } catch (err) {
               // @ts-ignore
               console.log("Error:> ",(err.errors ? err.errors[0].message : err));
+              setErrorText("Wrong Username/ Password");
+              setModalVisible(true);
             }
           };
 
@@ -68,6 +74,8 @@ export default function AuthScreen({navigation}) {
               navigation.navigate('VerifyCode');
             }catch (err){
               console.log('ERROR > ', (err.errors? err.errors[0].message : err));
+              setErrorText("Incomplete Sign Up");
+              setModalVisible(true);
             }
           };
      
@@ -77,6 +85,24 @@ export default function AuthScreen({navigation}) {
     return(
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style = {styles.container}>
+        <Modal
+              animationType='slide'
+              visible={modalVisible}
+              transparent={true}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+          >
+            <View style={styles.modal}>
+              <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 20, textAlign: 'center', margin: 20}}>{errorText}</Text>
+              <TouchableHighlight
+                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
+                onPress={() => setModalVisible(!modalVisible)}
+                underlayColor={colors.neutralButtonHighlight}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </Modal>
             <View style={styles.header}>
                 <Image
                 style={styles.image}
@@ -185,4 +211,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Lexend-Medium',
         fontSize: 16
       },
+      modal:{
+        width: 290,
+        height: 230,
+        backgroundColor: colors.secondary,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginTop: Dimensions.get('screen').height / 2 - 115,
+        borderRadius: 30,
+    
+      }
 });

@@ -47,6 +47,8 @@ export default function AddStock({navigation}) {
     'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf')
   });
 
+  let newList = global.userStocks;
+
   const[errorText, setErrorText] = useState(""); //Contains desc of user's failed entry if any
 
   function createStockObj(){
@@ -68,7 +70,7 @@ export default function AddStock({navigation}) {
         setErrorText("Price Field is Required");
 
       }else{
-        let newList = global.userStocks;
+       
         const len = newList.length + 1;
         const newStock = {
         shares: shares,
@@ -97,8 +99,8 @@ export default function AddStock({navigation}) {
         
         if(!isDupe){
         newList.push(newStock);
-        global.userStocks= newList;
         
+       global.userStocks = newList;
        
        
         }
@@ -106,27 +108,11 @@ export default function AddStock({navigation}) {
         shareSum += Number(shares);
         global.totShares = Number(shareSum);
 
-         
+          
       }
     });
     
-    const userID = user.id;
-    
-    const obj = {public_metadata: {"Data": JSON.stringify(global.userStocks), "totalShares" : totShares}};
-    const headers = new Headers();
-    headers.append("Authorization", "Bearer sk_test_kDK8pIxifMpw37PnQ3eNeBCsdrMvvwPu2knTLGwcVK");
-    headers.append("Content-Type", "application/json");
   
-   const request = new Request('https://api.clerk.com/v1/users/' + userID, {
-      method: "PATCH",
-      body: JSON.stringify(obj),
-      headers: headers,
-   });
-  
-  
-    fetch(request).then((response) => {
-    console.log('Request Status: ' + response.status)
-   });
 
    navigation.navigate('Home', {
     totShares: totShares,
