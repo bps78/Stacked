@@ -26,8 +26,15 @@ export default function HomeScreen({route, navigation}) {
 
   const[modalVisible, setModalVisible] = useState(false);
   
-   
-  const [userMetaStocks, setUserMetaStocks] = useState((JSON.parse(user.publicMetadata.Data)));
+
+  const [userMetaStocks, setUserMetaStocks] = useState([]);
+
+  try{
+  setUserMetaStocks((JSON.parse(user.publicMetadata.Data)));}
+  catch(e){
+    
+  }
+
   let portValue = 0;
   let totChange = 0;
   let dayChange = 0;

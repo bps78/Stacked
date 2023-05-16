@@ -30,10 +30,15 @@ function handler(){
       finnhubClient.quote(element.symbol, (error, data, response) => {
         const index = element.index - 1;
         let newList = global.userStocks;
+
         newList[index].openPrice = data.pc;
         newList[index].curPrice = data.c;
+
         console.log('NEW LIST', newList);
         global.userStocks = newList;
+
+
+
         const userID = user.id;
     const obj = {public_metadata: {"Data": JSON.stringify(newList)}};
     const headers = new Headers();

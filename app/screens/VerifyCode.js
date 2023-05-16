@@ -12,6 +12,7 @@ export default function SignUpScreen({navigation}){
   const { isLoaded, signUp, setSession } = useSignUp();
 
   const [code, setCode] = useState("");
+  const[modalVisible, setModalVisible] = useState(false);
 
   const screenHeight = Dimensions.get('screen').height;
 
@@ -29,14 +30,35 @@ export default function SignUpScreen({navigation}){
       await setSession(completeSignUp.createdSessionId);
       navigation.replace('Home');
     } catch (err) {
+      setModalVisible(true);
       console.log("Error:> " + err?.status || "");
       console.log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 
+  const errorText = "Incorrect Code"
+
   return (
    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
+          <Modal
+              animationType='slide'
+              visible={modalVisible}
+              transparent={true}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+          >
+            <View style={styles.modal}>
+              <Text style={{fontFamily: 'Lexend-Medium', color: 'white', fontSize: 20, textAlign: 'center', margin: 20}}>{errorText}</Text>
+              <TouchableHighlight
+                style={{backgroundColor: colors.neutral, width: 150, height: 45, borderRadius: 25, justifyContent: 'center', alignItems: 'center'}}
+                onPress={() => setModalVisible(!modalVisible)}
+                underlayColor={colors.neutralButtonHighlight}>
+                <Text style={{fontFamily: 'Lexend-Medium', color: 'black', fontSize: 16}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </Modal>
      <View style={styles.header}>
                 <Image
                 style={styles.image}
@@ -104,5 +126,16 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
     justifyContent: 'center', 
     alignItems: 'center'
-  }
+  },
+  modal:{
+    width: 330,
+    height: 400,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: Dimensions.get('screen').height / 2 - 190,
+    borderRadius: 30,
+
+  },
 });
