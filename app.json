@@ -18,7 +18,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.bps78.stacked"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +30,11 @@
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fcd524e1-c0b3-48d7-bbaf-4aa1890dd81c"
+      }
     }
   }
 }

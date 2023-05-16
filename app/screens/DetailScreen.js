@@ -25,7 +25,20 @@ export default function DetailScreen({route, navigation}) {
     });
     const sharePercent = ((shares/totShares) * 100).toFixed(0);
  
- 
+    const removeStock = () => {
+
+      let newList = global.userStocks;
+      let index = -1;
+      newList.forEach(element => {
+        if(element.symbol == symbol){
+          index = element.index - 1;
+        }
+      });
+      newList.splice(index, 1);
+      global.userStocks = newList;
+      navigation.navigate('Home', { totShares: totShares,});
+
+    }
 
     return(
         <View style={styles.container}>
@@ -90,6 +103,13 @@ export default function DetailScreen({route, navigation}) {
               
               <Text style={styles.dateText}>Added {date}</Text>
             </View>
+
+            <TouchableHighlight
+            style = {{width: 220, height: 50, backgroundColor: colors.secondary, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}
+            onPress={removeStock} 
+            underlayColor= {colors.neutralButtonHighlight}>
+              <Text style={{fontFamily: "Lexend-Medium", color:'lightgrey', fontSize: 26}}>Remove Stock</Text>
+            </TouchableHighlight>
 
 
           <View style={{flex: 1}}></View>
